@@ -33,7 +33,7 @@ announce "Copying script to bin directory.."
 cp $SCRIPT $BINDIR
 check_fail $?
 
-announce "Setting permissions on script"
+announce "Setting permissions on script.."
 chmod +x $BINDIR/$SCRIPT
 check_fail $?
 
