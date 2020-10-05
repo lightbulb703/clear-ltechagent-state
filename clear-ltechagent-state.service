@@ -1,0 +1,9 @@
+[Unit]
+Description=Run clear-ltechagent-state script
+
+[Service]
+Type=simple
+Nice=19
+IOSchedulingClass=2
+IOSchedulingPriority=7
+ExecStart=/usr/local/bin/clear-ltechagent-state
