@@ -15,12 +15,12 @@ Getting Started
 ### Install
 To install as a systemd timer (hourly basis), use **setup.sh**:
 
-    sudo setup.sh
+    sudo ./setup.sh
 
 ### Running manually (no timer)
 If you rather just run this manually:
 
-    sudo bash clear-ltechagent-state
+    sudo ./clear-ltechagent-state
 
 
 There may be other reasons as to why the agent is running. This is only meant
