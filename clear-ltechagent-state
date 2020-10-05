@@ -1,0 +1,93 @@
+#!/bin/bash
+# Written by Dennis Cole III
+# Clear LTechAgent State on Linux
+# This script checks for "Failed to unencrypt LabTech agent password".
+# If found, it deletes the state files in the ltechagent folder and restarts
+# agent.
+# This can be run as a regular script
+# This script is not written by, nor supported by ConnectWise
+#
+# Version 0.1.1
+
+
+# Check if running as root and exit if not
+if [[ $EUID -ne 0 ]]
+then
+  echo "This script must be run as root.."
+  exit 1
+fi
+
+# Functions
+# Announce says what's happening and hides output
+function announce {
+        >&2 echo -n "$1"
+}
+
+# Check_fail checks status of command and exits if it fails
+function check_fail {
+        if [[ $1 -ne 0 ]]; then
+                >&2 echo "FAIL!"
+                exit 1
+        else
+                >&2 echo "OK!"
+        fi
+}
+
+# Variable Checks
+LTDIR="/usr/local/ltechagent"
+AGENT_LOG="$LTDIR/agent.log"
+STATE_FILE="$LTDIR/state"
+STATE_OLD_FILE="$LTDIR/state_old"
+LTSVC="ltechagent.service"
+ERROR_CHECK_STRING="Failed to unencrypt LabTech agent password."
+
+# Trying to verify if LTechAgent is installed
+if [[ ! -d $LTDIR ]]
+then
+  echo "LTechAgent is not installed.."
+  exit 1
+fi
+
+# Verify there is an agent log
+if [[ ! -f $AGENT_LOG ]]
+then
+  echo "No agent log found.."
+  exit 1
+fi
+
+AGENT_ISSUE_FOUND=false
+
+while read -r line
+do
+  if [[ "$line" == *"$ERROR_CHECK_STRING"* ]]
+  then
+    AGENT_ISSUE_FOUND=true
+  fi
+done < <(tail $AGENT_LOG)
+
+if [[ "$AGENT_ISSUE_FOUND" == "true" ]]
+then
+  echo "Agent is not working. Working to fix now."
+
+  announce "Stopping LTechAgent Agent.."
+  systemctl stop $LTSVC
+  check_fail $?
+
+  announce "Removing state file.."
+  rm -f $STATE_FILE
+  check_fail $?
+
+  announce "Removing state_old file.."
+  rm -f $STATE_OLD_FILE
+  check_fail $?
+
+  announce "Starting LTechAgent.."
+  systemctl start $LTSVC
+  check_fail $?
+else
+  echo "The error string $ERROR_CHECK_STRING was not found."
+  echo "If you are still having an issue, you may need to do addtional troubleshooting"
+fi
+
+echo "All tasks complete."
+echo "Please check if the agent is running in Automate (LabTech)."
