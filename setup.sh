@@ -31,18 +31,12 @@ SYSTEMDDIR="/etc/systemd/system"
 
 announce "Copying script to bin directory.."
 cp $SCRIPT $BINDIR
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 check_fail $?
 
 announce "Setting permissions on script.."
-<<<<<<< HEAD
-=======
 check_fail $?
 
 announce "Setting permissions on script.."
->>>>>>> refs/remotes/origin/main
 chmod +x $BINDIR/$SCRIPT
 check_fail $?
 
@@ -57,16 +51,8 @@ check_fail $?
 announce "Enable timer.."
 systemctl enable --now $TIMER
 check_fail $?
-<<<<<<< HEAD
-=======
-check $?
-=======
-check_fail $?
->>>>>>> 0d901bd... Initial Version
 
 announce "Setting permissions on script"
-=======
->>>>>>> e7c1447... Initial Version
 chmod +x $BINDIR/$SCRIPT
 check_fail $?
 
@@ -80,13 +66,6 @@ check_fail $?
 
 announce "Enable timer.."
 systemctl enable --now $TIMER
-<<<<<<< HEAD
-check $?
->>>>>>> 98b3402... Initial Version
-=======
 check_fail $?
->>>>>>> 0d901bd... Initial Version
-=======
->>>>>>> refs/remotes/origin/main
 
 echo "Install Complete."

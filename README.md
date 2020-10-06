@@ -15,36 +15,12 @@ Getting Started
 ### Install
 To install as a systemd timer (hourly basis), use **setup.sh**:
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     sudo ./setup.sh
-=======
-    sudo setup.sh
->>>>>>> f90af70... Initial Version
-=======
-    sudo ./setup.sh
->>>>>>> d7e4476... Initial Version
-=======
-    sudo ./setup.sh
->>>>>>> refs/remotes/origin/main
 
 ### Running manually (no timer)
 If you rather just run this manually:
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     sudo ./clear-ltechagent-state
-=======
-    sudo bash clear-ltechagent-state
->>>>>>> f90af70... Initial Version
-=======
-    sudo ./clear-ltechagent-state
->>>>>>> d7e4476... Initial Version
-=======
-    sudo ./clear-ltechagent-state
->>>>>>> refs/remotes/origin/main
 
 
 There may be other reasons as to why the agent is running. This is only meant
