@@ -13,7 +13,8 @@ Getting Started
 ---------------
 
 ### Install
-To install as a systemd timer (hourly basis), use **setup.sh**:
+To install as a systemd timer (five minutes after boot and hourly afterwards),
+ use **setup.sh**:
 
     sudo ./setup.sh
 
