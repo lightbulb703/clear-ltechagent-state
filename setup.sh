@@ -30,10 +30,7 @@ BINDIR="/usr/local/bin"
 SYSTEMDDIR="/etc/systemd/system"
 
 announce "Copying script to bin directory.."
-cp $SCRIPT $BINDIR
-check_fail $?
-
-announce "Setting permissions on script.."
+cp -f $SCRIPT $BINDIR
 check_fail $?
 
 announce "Setting permissions on script.."
@@ -41,23 +38,7 @@ chmod +x $BINDIR/$SCRIPT
 check_fail $?
 
 announce "Copying systemd files.."
-cp $SCRIPT.* $SYSTEMDDIR
-check_fail $?
-
-announce "Reload systemd daemon.."
-systemctl daemon-reload
-check_fail $?
-
-announce "Enable timer.."
-systemctl enable --now $TIMER
-check_fail $?
-
-announce "Setting permissions on script"
-chmod +x $BINDIR/$SCRIPT
-check_fail $?
-
-announce "Copying systemd files.."
-cp $SCRIPT.* $SYSTEMDDIR
+cp -f $SCRIPT.* $SYSTEMDDIR
 check_fail $?
 
 announce "Reload systemd daemon.."

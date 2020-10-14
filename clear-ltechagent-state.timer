@@ -1,8 +1,9 @@
 [Unit]
-Description=Run clear-ltechagent-state on timer
+Description=Run clear-ltechagent-state on boot and timer
 
 [Timer]
-OnCalendar=hourly
+OnBootSec=5min
+OnUnitActiveSec=1h
 
 [Install]
 WantedBy=timers.target
