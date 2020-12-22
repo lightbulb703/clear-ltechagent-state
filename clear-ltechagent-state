@@ -1,13 +1,15 @@
 #!/bin/bash
 # Written by Dennis Cole III
 # Clear LTechAgent State on Linux
-# This script checks for "Failed to unencrypt LabTech agent password".
+# This script checks for "Failed to unencrypt LabTech agent password",
+# "Failed to read agent state file" and "Failed to read old agent state file"
+#
 # If found, it deletes the state files in the ltechagent folder and restarts
 # agent.
 # This can be run as a regular script
 # This script is not written by, nor supported by ConnectWise
 #
-# Version 0.1.3
+# Version 0.2.1 - added additional error strings to check
 
 
 # Check if running as root and exit if not
@@ -39,7 +41,9 @@ AGENT_LOG="$LTDIR/agent.log"
 STATE_FILE="$LTDIR/state"
 STATE_OLD_FILE="$LTDIR/state_old"
 LTSVC="ltechagent.service"
-ERROR_CHECK_STRING="Failed to unencrypt LabTech agent password."
+ERROR_CHECK_STRINGS=("Failed to unencrypt LabTech agent password."
+                    "Failed to read agent state file"
+                    "Failed to read old agent state file")
 
 # Trying to verify if LTechAgent is installed
 if [[ ! -d $LTDIR ]]
@@ -59,10 +63,13 @@ AGENT_ISSUE_FOUND=false
 
 while read -r line
 do
-  if [[ "$line" == *"$ERROR_CHECK_STRING"* ]]
-  then
-    AGENT_ISSUE_FOUND=true
-  fi
+  for e in ${ERROR_CHECK_STRINGS[@]}
+  do
+    if [[ "$line" == *"$e"* ]]
+    then
+      AGENT_ISSUE_FOUND=true
+    fi
+  done
 done < <(tail $AGENT_LOG)
 
 if [[ "$AGENT_ISSUE_FOUND" == "true" ]]
@@ -85,7 +92,7 @@ then
   systemctl start $LTSVC
   check_fail $?
 else
-  echo "The error string $ERROR_CHECK_STRING was not found."
+  echo "No recent errors were found that can be fixed with this script."
   echo "If you are still having an issue, you may need to do addtional troubleshooting"
 fi
 
