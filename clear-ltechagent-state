@@ -42,8 +42,8 @@ STATE_FILE="$LTDIR/state"
 STATE_OLD_FILE="$LTDIR/state_old"
 LTSVC="ltechagent.service"
 ERROR_CHECK_STRINGS=("Failed to unencrypt LabTech agent password."
-                    "Failed to read agent state file"
-                    "Failed to read old agent state file")
+                    "Failed to read agent state file")
+# This line is not quite working                    "Failed to read old agent state file")
 
 # Trying to verify if LTechAgent is installed
 if [[ ! -d $LTDIR ]]
