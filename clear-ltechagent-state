@@ -9,6 +9,7 @@
 # This can be run as a regular script
 # This script is not written by, nor supported by ConnectWise
 #
+# Version 0.2.2 - There was an issue with looping the Error Check strings
 # Version 0.2.1 - added additional error strings to check
 
 
@@ -45,6 +46,10 @@ ERROR_CHECK_STRINGS=("Failed to unencrypt LabTech agent password."
                     "Failed to read agent state file"
                     "Failed to read old agent state file")
 
+# Start of script
+echo "**********************************************************************"
+echo "Script ${0##*/} has started"
+
 # Trying to verify if LTechAgent is installed
 if [[ ! -d $LTDIR ]]
 then
@@ -63,17 +68,20 @@ AGENT_ISSUE_FOUND=false
 
 while read -r line
 do
-  for e in ${ERROR_CHECK_STRINGS[@]}
+  for ((i = 0; i < ${#ERROR_CHECK_STRINGS[@]}; i++))
   do
-    if [[ "$line" == *"$e"* ]]
+    ERR=${ERROR_CHECK_STRINGS[$i]}
+    if [[ "$line" == *"$ERR"* ]]
     then
       AGENT_ISSUE_FOUND=true
+      LAST_FOUND_ERROR=$ERR
     fi
   done
 done < <(tail $AGENT_LOG)
 
 if [[ "$AGENT_ISSUE_FOUND" == "true" ]]
 then
+  echo "At least one error was found. Last error: $LAST_FOUND_ERROR"
   echo "Agent is not working. Working to fix now."
 
   announce "Stopping LTechAgent Agent.."
@@ -96,5 +104,8 @@ else
   echo "If you are still having an issue, you may need to do addtional troubleshooting"
 fi
 
+# End of script
 echo "All tasks complete."
 echo "Please check if the agent is running in Automate (LabTech)."
+echo "Script ${0##*/} has ended"
+echo "**********************************************************************"
