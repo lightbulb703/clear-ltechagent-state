@@ -29,16 +29,12 @@ TIMER="$SCRIPT.timer"
 BINDIR="/usr/local/bin"
 SYSTEMDDIR="/etc/systemd/system"
 
-announce "Copying script to bin directory.."
-cp -f $SCRIPT $BINDIR
+announce "Installing script to $BIDDIR.."
+install -m755 $SCRIPT $BINDIR
 check_fail $?
 
-announce "Setting permissions on script.."
-chmod +x $BINDIR/$SCRIPT
-check_fail $?
-
-announce "Copying systemd files.."
-cp -f $SCRIPT.* $SYSTEMDDIR
+announce "Installing systemd files.."
+install -m644 $SCRIPT.* $SYSTEMDDIR
 check_fail $?
 
 announce "Reload systemd daemon.."
